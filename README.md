@@ -8,11 +8,11 @@ TODO: increase amount of information displayed
 
 Setup:
 
-1) git clone this repo to $(YOUR_CATKIN_WORKSPACE_/src
-2) catkin_make 
-3) Launch your camera driver
-4) Modify $(THIS_REPO_ROOT)/launch/ros_tld_left_tracker.launch, $(THIS_REPO_ROOT)/launch/ros_tld_right_tracker.launch and $(THIS_REPO_ROOT)/launch/ros_tld_stereo.launch to provide the correct image topics
-5) roslaunch the launch files mentioned in (4)
+- git clone this repo to $(YOUR_CATKIN_WORKSPACE)/src
+- catkin_make 
+- Launch your camera driver
+- Modify $(THIS_REPO_ROOT)/launch/ros_tld_left_tracker.launch, $(THIS_REPO_ROOT)/launch/ros_tld_right_tracker.launch and $(THIS_REPO_ROOT)/launch/ros_tld_stereo.launch to provide the correct image topics
+- roslaunch the launch files mentioned in (4)
 
 ## Previous README.md
 
