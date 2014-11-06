@@ -113,11 +113,19 @@ catkin_package(
 ###########
 
 #Qt4 specific for the GUI
-set(TLD_QT_HEADERS  src/base_frame.hpp 
-                    src/ui_baseFrame.h
-                    src/base_frame_graphics_view.hpp)
-
+set(TLD_QT_HEADERS  
+      src/base_frame.hpp
+      src/ui_baseFrame.h
+      src/base_frame_graphics_view.hpp)
 QT4_WRAP_CPP(TLD_QT_HEADERS_MOC ${TLD_QT_HEADERS})
+
+#Qt4 specific for the Stereo GUI
+set(TLD_STEREO_QT_HEADERS  
+      src/stereo_frame.hpp 
+      src/ui_stereoFrame.h
+      src/base_frame_graphics_view.hpp)
+QT4_WRAP_CPP(TLD_STEREO_QT_HEADERS_MOC ${TLD_STEREO_QT_HEADERS})
+
 include(${QT_USE_FILE})
 
 ## Specify additional locations of header files
@@ -147,6 +155,12 @@ add_executable(tld_gui_node     src/tld_gui_node.cpp
                                 ${TLD_QT_HEADERS_MOC}
 )
 
+add_executable(tld_stereo_node  src/tld_stereo_node.cpp
+                                src/stereo_frame.cpp 
+                                src/base_frame_graphics_view.cpp
+                                ${TLD_STEREO_QT_HEADERS_MOC}
+)
+
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
 
@@ -165,6 +179,10 @@ target_link_libraries(tld_gui_node
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(tld_stereo_node
+  ${QT_LIBRARIES}
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
