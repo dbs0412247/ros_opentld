@@ -1,4 +1,22 @@
-This is a ROS version of the OpenTLD tracker.
+Work in progress: 
+
+- Stereo Version of OpenTLD 
+
+Currently only supporting horizontal stereo.
+
+TODO: increase amount of information displayed
+
+Setup:
+
+1) git clone this repo to $(YOUR_CATKIN_WORKSPACE_/src
+2) catkin_make 
+3) Launch your camera driver
+4) Modify $(THIS_REPO_ROOT)/launch/ros_tld_left_tracker.launch, $(THIS_REPO_ROOT)/launch/ros_tld_right_tracker.launch and $(THIS_REPO_ROOT)/launch/ros_tld_stereo.launch to provide the correct image topics
+5) roslaunch the launch files mentioned in (4)
+
+## Previous README.md
+
+This is a ROS version of the OpenTLD tracker by Ronan0912.
 
 OpenTLD is a C++ implementation of TLD Predator (Tracking. Learning and Detection) implemented by the AIT (Austrian Institute of Technology) that was originally published in MATLAB by Zdenek Kalal. OpenTLD is used for tracking objects in video streams. It doesn't need any training data and is also able to load predefined models (http://gnebehay.github.com/OpenTLD/).
 
