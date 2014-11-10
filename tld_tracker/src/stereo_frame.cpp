@@ -181,6 +181,10 @@ void StereoFrame::trackedObjectCB_Left(const tld_msgs::BoundingBoxConstPtr & msg
     first_image_left = false;
 
     QRectF rect(msg->x,msg->y,msg->width,msg->height);
+
+    // TODO: Calculate 3D coordinate of center of BB
+        
+
     emit sig_tracked_object_changed_left(rect);
     emit sig_confidence_changed_left((int)(msg->confidence*100));
 }
@@ -230,6 +234,9 @@ void StereoFrame::trackedObjectCB_Right(const tld_msgs::BoundingBoxConstPtr & ms
     first_image_right = false;
 
     QRectF rect(msg->x,msg->y,msg->width,msg->height);
+  
+    // TODO: Calculate 3D coordinate of center of BB
+
     emit sig_tracked_object_changed_right(rect);
     emit sig_confidence_changed_right((int)(msg->confidence*100));
 }
