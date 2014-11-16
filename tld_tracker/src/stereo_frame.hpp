@@ -9,12 +9,19 @@
 #include <QtCore/QRectF>
 
 #include <ros/ros.h>
+#include <message_filters/subscriber.h>
+#include <message_filters/time_synchronizer.h>
+#include <message_filters/synchronizer.h>
+#include <message_filters/sync_policies/exact_time.h>
+#include <message_filters/connection.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/Image.h>
+#include <sensor_msgs/CameraInfo.h>
 #include <tld_msgs/Target.h>
 #include <tld_msgs/BoundingBox.h>
 #include <std_msgs/Char.h>
 #include <std_msgs/Float32.h>
+#include <opencv2/core/core.hpp>
 
 #include "ui_stereoFrame.h"
 
@@ -36,14 +43,25 @@ public:
   ros::Publisher pub_CmdsLeft;
   ros::Publisher pub_CmdsRight;
   // Left and Right tracked object subscribers
-  ros::Subscriber sub_TrackedObjLeft;
-  ros::Subscriber sub_TrackedObjRight;
+  // ros::Subscriber sub_TrackedObjLeft;
+  // ros::Subscriber sub_TrackedObjRight;
+  message_filters::Subscriber<tld_msgs::BoundingBox> sub_TrackedObjLeft;
+  message_filters::Subscriber<tld_msgs::BoundingBox> sub_TrackedObjRight;
+  // An object to synchronize received tracked object for 3D position calculations
+  message_filters::TimeSynchronizer<tld_msgs::BoundingBox, 
+                                    tld_msgs::BoundingBox> sync_TrackedObj;
   // Left and Right tracking fps subscribers
   ros::Subscriber sub_FPSLeft;
   ros::Subscriber sub_FPSRight;
   // Left and Right image topic subscribers
   ros::Subscriber sub_ImageLeft;
   ros::Subscriber sub_ImageRight;
+  // Left and Right CameraInfo subscribers
+  ros::Subscriber sub_CameraInfoLeft;
+  ros::Subscriber sub_CameraInfoRight;
+
+  // Left and Right camera intrinsics and extrinsics
+  cv::Mat matProjLeft, matProjRight;
 
   explicit StereoFrame(QWidget *parent = 0);
   ~StereoFrame();
@@ -58,11 +76,15 @@ private:
   bool first_image_right;
 
   void imageReceivedCB_Left(const sensor_msgs::ImageConstPtr & msg);
-  void trackedObjectCB_Left(const tld_msgs::BoundingBoxConstPtr & msg);
+  void camInfoReceivedCB_Left(const sensor_msgs::CameraInfo & msg);
+  //void trackedObjectCB_Left(const tld_msgs::BoundingBoxConstPtr & msg);
   void fpsTrackerCB_Left(const std_msgs::Float32ConstPtr & msg);
   void imageReceivedCB_Right(const sensor_msgs::ImageConstPtr & msg);
-  void trackedObjectCB_Right(const tld_msgs::BoundingBoxConstPtr & msg);
+  void camInfoReceivedCB_Right(const sensor_msgs::CameraInfo & msg);
+  //void trackedObjectCB_Right(const tld_msgs::BoundingBoxConstPtr & msg);
   void fpsTrackerCB_Right(const std_msgs::Float32ConstPtr & msg);
+  void trackedObjectCB_Sync(const tld_msgs::BoundingBoxConstPtr & msgLeft,
+                            const tld_msgs::BoundingBoxConstPtr & msgRight);
 
 signals:
   void sig_image_received_left(const QImage & image);

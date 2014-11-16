@@ -1,17 +1,77 @@
 <launch>
-    <arg name="left_image_topic"        default="/builtin_cam/image_raw"/>
-    <arg name="right_image_topic"       default="/builtin_cam/image_raw"/>
+  <arg name="left_image_topic"        default="/stereo/left/image_rect_color"/>
+  <arg name="right_image_topic"       default="/stereo/right/image_rect_color"/>
+  <arg name="left_camera_info"        default="/stereo/left/camera_info"/>
+  <arg name="right_camera_info"       default="/stereo/right/camera_info"/>
+  <arg name="load_model" default="false"/>
+  <arg name="auto_face_detection" default="false"/>
+  <arg name="model_import_file" default="/home/tld_models/sample"/>
+  <arg name="model_export_file" default="/home/tld_models/sample"/>
+  <arg name="cascade_path" default=
+          "$(env ROS_ROOT)/../OpenCV/haarcascades/haarcascade_frontalface_alt.xml"/>
 
-    <!-- Nodes -->
-    <node name="ros_tld_stereo_node" pkg="tld_tracker" type="tld_stereo_node"
-        output="screen">
-        <remap from="image_left" to="$(arg left_image_topic)"/>
-        <remap from="tracked_object_left" to="tld_tracked_object_left"/>
-        <remap from="fps_tracker_left" to="tld_fps_left"/>
+  <!-- STEREO GUI Node -->
+  <node name="ros_tld_stereo_node" pkg="tld_tracker" type="tld_stereo_node"
+    output="screen" required="true">
+    <remap from="image_left" to="$(arg left_image_topic)"/>
+    <remap from="cam_info_left" to="$(arg left_camera_info)"/>
+    <remap from="tracked_object_left" to="tld_tracked_object_left"/>
+    <remap from="fps_tracker_left" to="tld_fps_left"/>
 
-        <remap from="image_right" to="$(arg right_image_topic)"/>
-        <remap from="tracked_object_right" to="tld_tracked_object_right"/>
-        <remap from="fps_tracker_right" to="tld_fps_right"/>
-   </node>
+    <remap from="image_right" to="$(arg right_image_topic)"/>
+    <remap from="cam_info_right" to="$(arg right_camera_info)"/>
+    <remap from="tracked_object_right" to="tld_tracked_object_right"/>
+    <remap from="fps_tracker_right" to="tld_fps_right"/>
+  </node>
+
+  <!-- LEFT TRACKER Node -->
+  <node name="ros_tld_tracker_left_node" pkg="tld_tracker" type="tld_tracker_node">
+
+    <!-- remap of topics -->
+    <remap from="image" to="$(arg left_image_topic)"/>
+    <remap from="bounding_box" to="tld_stereo_bb_left"/>
+    <remap from="cmds" to="tld_stereo_cmds_left"/>
+    <remap from="tld_tracked_object" to="tld_tracked_object_left" />
+    <remap from="tld_fps" to="tld_fps_left" />
+
+    <!-- declare param and read value of arg-->
+    <param name="showOutput" value="true" type="bool"/>
+    <param name="loadModel" value="$(arg load_model)" type="bool"/>
+    <param name="autoFaceDetection" value="$(arg auto_face_detection)" type="bool"/>
+    <param name="modelImportFile" value="$(arg model_import_file)" type="string"/>
+    <param name="exportModelAfterRun" value="false" type="bool"/>
+    <param name="modelExportFile" value="$(arg model_export_file)" type="string"/>
+    <param name="cascadePath" value="$(arg cascade_path)" type="string"/>
+    <param name="x" value="200" type="int"/>
+    <param name="y" value="200" type="int"/>
+    <param name="width" value="200" type="int"/>
+    <param name="height" value="200" type="int"/>
+    <param name="correctBB" value="false" type="bool"/>
+  </node>
+
+  <!-- RIGHT TRACKER Node -->
+  <node name="ros_tld_tracker_right_node" pkg="tld_tracker" type="tld_tracker_node">
+
+    <!-- remap of topics -->
+    <remap from="image" to="$(arg right_image_topic)"/>
+    <remap from="bounding_box" to="tld_stereo_bb_right"/>
+    <remap from="cmds" to="tld_stereo_cmds_right"/>
+    <remap from="tld_tracked_object" to="tld_tracked_object_right" />
+    <remap from="tld_fps" to="tld_fps_right" />
+
+    <!-- declare param and read value of arg-->
+    <param name="showOutput" value="true" type="bool"/>
+    <param name="loadModel" value="$(arg load_model)" type="bool"/>
+    <param name="autoFaceDetection" value="$(arg auto_face_detection)" type="bool"/>
+    <param name="modelImportFile" value="$(arg model_import_file)" type="string"/>
+    <param name="exportModelAfterRun" value="false" type="bool"/>
+    <param name="modelExportFile" value="$(arg model_export_file)" type="string"/>
+    <param name="cascadePath" value="$(arg cascade_path)" type="string"/>
+    <param name="x" value="200" type="int"/>
+    <param name="y" value="200" type="int"/>
+    <param name="width" value="200" type="int"/>
+    <param name="height" value="200" type="int"/>
+    <param name="correctBB" value="false" type="bool"/>
+  </node>
 </launch>
 

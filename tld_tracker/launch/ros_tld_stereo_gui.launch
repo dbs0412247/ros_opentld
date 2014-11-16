@@ -1,0 +1,21 @@
+<launch>
+    <arg name="left_image_topic"        default="/stereo/left/image_rect_color"/>
+    <arg name="right_image_topic"       default="/stereo/right/image_rect_color"/>
+    <arg name="left_camera_info"        default="/stereo/left/camera_info"/>
+    <arg name="right_camera_info"       default="/stereo/right/camera_info"/>
+
+    <!-- Nodes -->
+    <node name="ros_tld_stereo_node" pkg="tld_tracker" type="tld_stereo_node"
+        output="screen">
+        <remap from="image_left" to="$(arg left_image_topic)"/>
+        <remap from="cam_info_left" to="$(arg left_camera_info)"/>
+        <remap from="tracked_object_left" to="tld_tracked_object_left"/>
+        <remap from="fps_tracker_left" to="tld_fps_left"/>
+
+        <remap from="image_right" to="$(arg right_image_topic)"/>
+        <remap from="cam_info_right" to="$(arg right_camera_info)"/>
+        <remap from="tracked_object_right" to="tld_tracked_object_right"/>
+        <remap from="fps_tracker_right" to="tld_fps_right"/>
+   </node>
+</launch>
+
