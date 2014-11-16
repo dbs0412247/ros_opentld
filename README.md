@@ -2,20 +2,24 @@ Work in progress:
 
 - Stereo Version of OpenTLD 
 
-Currently only supporting horizontal stereo.
+Status: 
+  Currently only supporting horizontal stereo.
 
-TODO: increase amount of information displayed
+Description: 
+  This is a stereo implementation of OpenTLD, containing 3 nodes and requires stereo calibration inforation from left and right cameras' camera_info topic. The 3 nodes are: two tld_tracker nodes and one GUI node. Currently, the output from the stereo tracker is the triangulated distance of the tracked object from the left camera, shown on terminal.
+
 
 Setup:
 
 - git clone this repo to $(YOUR_CATKIN_WORKSPACE)/src
 - catkin_make 
-- Launch your camera driver
-- Modify $(THIS_REPO_ROOT)/launch/ros_tld_left_tracker.launch, $(THIS_REPO_ROOT)/launch/ros_tld_right_tracker.launch and $(THIS_REPO_ROOT)/launch/ros_tld_stereo.launch to provide the correct image topics
+- Launch your (stereo) camera driver(s)
+- Modify $(THIS_REPO_ROOT)/launch/ros_tld_left_tracker.launch, $(THIS_REPO_ROOT)/launch/ros_tld_right_tracker.launch and $(THIS_REPO_ROOT)/launch/ros_tld_stereoi_gui.launch to provide the correct image topics
 
 How to run/use:
 
-- roslaunch (all 3 of) the launch files modified in Setup
+- roslaunch (all 3 of) the launch files modified in Setup, or;
+- refer to ros_tld_stereo.launch for multiple nodes in a single launch 
 
 * `q`     quit
 * `b`     remember current frame as background model / clear background
